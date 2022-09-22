@@ -81,4 +81,34 @@
             android:src="@drawable/right_arrow_home" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/bt_choose_ride_pref"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bt_choose_vehicle"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/home_tv_bg"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:fontFamily="@font/poppins"
+            android:text="Choose Drive Preference"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="24dp"
+            android:src="@drawable/right_arrow_home" />
+    </RelativeLayout>
+
 </RelativeLayout>

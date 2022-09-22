@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.PopupMenu;
@@ -16,6 +17,8 @@ public class UserHomeFragment extends Fragment {
 
 
     private RelativeLayout btChooseVehicle;
+    private LinearLayout tvHomeUser;
+    private RelativeLayout btChooseRidePref;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,10 +55,13 @@ public class UserHomeFragment extends Fragment {
             }
         });
 
+
         return view;
     }
 
     private void initView(View view) {
         btChooseVehicle = view.findViewById(R.id.bt_choose_vehicle);
+        tvHomeUser = view.findViewById(R.id.tv_home_user);
+        btChooseRidePref = view.findViewById(R.id.bt_choose_ride_pref);
     }
 }
