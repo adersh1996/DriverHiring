@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -58,8 +59,11 @@ dependencies {
     //Butterknife
     implementation 'com.jakewharton:butterknife:10.2.3'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.7'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
+    //notification
+    implementation 'com.github.isradeleon:Notify-Android:1.0.5'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

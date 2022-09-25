@@ -26,24 +26,32 @@ public interface APIInterface {
     @Multipart
     @POST("driver_reg.php")
     Call<Root> DRIVEREGROOTCALL(@Part("name")RequestBody name,
+                                @Part("phone")RequestBody phone,
                                @Part("email")RequestBody email,
-                               @Part("phone")RequestBody phone,
                                @Part("password")RequestBody password,
                                @Part("address")RequestBody address,
                                 @Part("district")RequestBody district,
                                 @Part("state")RequestBody state,
-                                @Part("vehicle")RequestBody vehicle,
                                 @Part("experience")RequestBody experience,
-                                @Part("working_hours")RequestBody workingHours,
                                 @Part("languages")RequestBody languages,
                                 @Part("blood")RequestBody bloodGroup,
+                                @Part("device_token")RequestBody deviceToken,
+                                @Part("hgmv")RequestBody hgmv,
+                                @Part("long_distance")RequestBody longDrive,
+                                @Part("route_pref")RequestBody routePref,
+                                @Part("account_no")RequestBody accountNo,
+                                @Part("ifsc")RequestBody iFsc,
                                 @Part MultipartBody.Part licenceImage,
-                                @Part MultipartBody.Part proImage,
-                                @Part("preference")RequestBody preference);
+                                @Part MultipartBody.Part proImage);
 
     @GET("driver_login.php")
     Call<Root>DRIVER_LOGIN(@Query("phone")String phone,@Query("password")String password);
 
     @GET("user_login.php")
     Call<Root>USER_LOGIN(@Query("phone")String phone,@Query("password")String password);
+
+    @GET("view_driver_list.php")
+    Call<Root>DRIVER_LIST_CALL(@Query("s_lat")String userLat,@Query("s_long")String userLong,
+                               @Query("d_lat")String destinationLat,@Query("d_long")String destinationLong,
+                               @Query("hgmv")String vehicleType,@Query("route_pref")String routePref);
 }

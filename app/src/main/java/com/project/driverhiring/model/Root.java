@@ -7,5 +7,7 @@ public class Root {
     public String message;
     public ArrayList<DriverDetail> driverDetails;
     public ArrayList<UserDetail> userDetails;
+    public ArrayList<DriverList> driverList;
+
 
 }

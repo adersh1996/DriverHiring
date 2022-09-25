@@ -219,6 +219,38 @@
                         android:src="@drawable/exp_icon" />
 
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorlinebkack" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/et_bloodGroup"
+                        style="@style/modifiedEditText"
+                        android:layout_weight="0.9"
+                        android:background="@null"
+                        android:drawablePadding="0.5dip"
+                        android:hint="Blood Group"
+                        android:maxLines="1"
+                        android:textColor="@color/black" />
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center|left"
+                        android:src="@drawable/blood_gp_icon" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -314,19 +346,19 @@
                     android:orientation="horizontal">
 
                     <RadioGroup
-                        android:id="@+id/radio_group_preference"
+                        android:id="@+id/radio_group_oneway_twoway"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <RadioButton
-                            android:id="@+id/rb_user"
+                            android:id="@+id/rb_oneWay_preference"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:text="One Way" />
 
                         <RadioButton
-                            android:id="@+id/rb_driver"
+                            android:id="@+id/rb_twoWay_preference"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"

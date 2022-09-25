@@ -1,9 +1,15 @@
 package com.project.driverhiring;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -12,7 +18,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -29,14 +34,67 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
     private GoogleMap mMap;
     private ActivityMapChooseDestinationBinding binding;
     RelativeLayout confirmLocationBt;
-    String latitude="",longitude="";
+    String destinationLatitude ="", destinationLongitude ="";
+    private GpsTracker gpsTracker;
+    double userLatitudeDouble, userLongitudeDouble;
+    String userLatitude= "",userLongitude="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         binding = ActivityMapChooseDestinationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // obtaining current location
+
+        try {
+//            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //  ActivityCompat.requestPermissions(getParent(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+                checkPermissions(Manifest.permission.ACCESS_FINE_LOCATION, 101);
+            } else {
+                gpsTracker = new GpsTracker(getApplicationContext());
+                if (gpsTracker.canGetLocation()) {
+
+                    userLatitudeDouble = gpsTracker.getLatitude();
+                    userLongitudeDouble = gpsTracker.getLongitude();
+
+                    userLatitude=String.valueOf(userLatitudeDouble);
+                    userLongitude=String.valueOf(userLongitudeDouble);
+
+                    // apiCall("8.9076","77.0549");
+                    //                   apiCall(String.valueOf(latitude),String.valueOf(longitude));
+                    Geocoder geocoder;
+                    List<Address> addresses = null;
+                    geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+                    try {
+                        addresses = geocoder.getFromLocation(userLatitudeDouble, userLongitudeDouble, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // locationTextView.setText(addresses.get(0).getLocality());
+
+                    String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                    String city = addresses.get(0).getLocality();
+                    String state = addresses.get(0).getAdminArea();
+                    String country = addresses.get(0).getCountryName();
+                    String postalCode = addresses.get(0).getPostalCode();
+                    String knownName = addresses.get(0).getFeatureName();
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -48,9 +106,16 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
         confirmLocationBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (latitude.equals("")||longitude.equals("")){
+                if (destinationLatitude.equals("")|| destinationLongitude.equals("")){
                     Toast.makeText(MapActivityChooseDestination.this, "Please Choose Your Destination", Toast.LENGTH_SHORT).show();
                 }else {
+                    SharedPreferences sharedPreferences = getSharedPreferences("userPref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("destination_lat",destinationLatitude);
+                    editor.putString("destination_longitude",destinationLongitude);
+                    editor.putString("user_latitude",userLatitude);
+                    editor.putString("user_longitude",userLongitude);
+                    editor.commit();
                     Intent intent=new Intent(getApplicationContext(),DriverListActivity.class);
                     startActivity(intent);
                 }
@@ -83,8 +148,8 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
             public void onMapClick(@NonNull LatLng latLng) {
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng));
-                latitude= String.valueOf(latLng.latitude);
-                longitude= String.valueOf(latLng.longitude);
+                destinationLatitude = String.valueOf(latLng.latitude);
+                destinationLongitude = String.valueOf(latLng.longitude);
 
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 try {
@@ -112,5 +177,17 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
 
             }
         });
+
+
+    }
+    // Function to check and request permission.
+    public void checkPermissions(String permission, int requestCode) {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), permission) == PackageManager.PERMISSION_DENIED) {
+            // Requesting the permission
+            ActivityCompat.requestPermissions(MapActivityChooseDestination.this, new String[]{permission}, requestCode);
+        } else {
+            Toast.makeText(getApplicationContext(), "Permission Already granted", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

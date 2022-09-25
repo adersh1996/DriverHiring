@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,9 @@ import retrofit2.Response;
 
 public class DriverSignin extends AppCompatActivity implements Validator.ValidationListener {
 
+    //TODO Error in deafult pref and api call
+
+
     private CircleImageView imgProfilePic;
     private TextView tvUserName;
     private CircleImageView editProImg;
@@ -53,17 +58,11 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
     @NotEmpty
     private EditText etState;
     @NotEmpty
-    private EditText etVehicleType;
-    @NotEmpty
     private EditText etExperience;
-    @NotEmpty
-    private EditText etWorkingHours;
     @NotEmpty
     private EditText etLanguage;
     @NotEmpty
     private EditText etBloodGroup;
-    @NotEmpty
-    private EditText etPreferences;
     @NotEmpty
     private EditText etChooseId;
     private ImageView chooseIdOne;
@@ -78,6 +77,22 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
     private static final int RESULT_LOAD_PRO_IMAGE = 106;
     private static final int RESULT_LOAD_LICENSE_IMAGE = 105;
     private File proImageFile, licenseImageFile;
+    private RadioGroup radioGroupLongDrive;
+    private RadioButton rbLongYes;
+    private RadioButton rbLongNo;
+    private RadioGroup radioGroupPreference;
+    private RadioButton rbOneWay;
+    private RadioButton rbTwoWay;
+    private RadioGroup radioGroupVehicleType;
+    private RadioButton rbLmv;
+    private RadioButton rbHgmv;
+    @NotEmpty
+    private EditText etBankAccountNumber;
+    @NotEmpty
+    private EditText etIfscCode;
+    String prefe = "";
+    String vehicle = "";
+    String longDriveOrShort = "";
 
 
     @Override
@@ -85,8 +100,13 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_signin);
         initView();
+
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        rbLongYes.setChecked(true);
+        rbOneWay.setChecked(true);
+        rbLmv.setChecked(true);
 
         userName = getIntent().getStringExtra("name");
         phoneNumber = getIntent().getStringExtra("phone");
@@ -137,6 +157,9 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
         etDistrict = findViewById(R.id.et_district);
         etState = findViewById(R.id.et_state);
         etExperience = findViewById(R.id.et_experience);
+        etBloodGroup=findViewById(R.id.et_bloodGroup);
+        etBankAccountNumber=findViewById(R.id.et_bank_account_number);
+        etIfscCode=findViewById(R.id.et_ifsc_code);
         etLanguage = findViewById(R.id.et_language);
         etChooseId = findViewById(R.id.et_choose_id);
         chooseIdOne = findViewById(R.id.choose_id_one);
@@ -145,14 +168,59 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
         layoutBtn = findViewById(R.id.layout_btn);
         btSignIn = findViewById(R.id.bt_signIn);
         login = findViewById(R.id.login);
+        radioGroupLongDrive = findViewById(R.id.radio_group_long_drive);
+        rbLongYes = findViewById(R.id.rb_long_yes);
+        rbLongNo = findViewById(R.id.rb_long_no);
+        radioGroupPreference = findViewById(R.id.radio_group_oneway_twoway);
+        rbOneWay = findViewById(R.id.rb_oneWay_preference);
+        rbTwoWay = findViewById(R.id.rb_twoWay_preference);
+        radioGroupVehicleType = findViewById(R.id.radio_group_vehicle_type);
+        rbLmv = findViewById(R.id.rb_lmv);
+        rbHgmv = findViewById(R.id.rb_hgmv);
     }
 
     @Override
     public void onValidationSucceeded() {
-        apiCall();
+
+        int drivePreference = radioGroupPreference.getCheckedRadioButtonId();
+        int vehiclePref = radioGroupVehicleType.getCheckedRadioButtonId();
+        int longDrive = radioGroupLongDrive.getCheckedRadioButtonId();
+
+        switch (drivePreference) {
+            case R.id.rb_oneWay_preference:
+                prefe = "false";
+                break;
+            case R.id.rb_twoWay_preference:
+                prefe = "true";
+        }
+
+        switch (vehiclePref) {
+            case R.id.rb_lmv:
+                vehicle = "false";
+                break;
+            case R.id.rb_hgmv:
+                vehicle = "true";
+        }
+
+        switch (longDrive) {
+            case R.id.rb_long_no:
+                longDriveOrShort = "false";
+                break;
+            case R.id.rb_long_yes:
+                longDriveOrShort = "true";
+        }
+
+        if (prefe.equals("") || vehicle.equals("") || longDriveOrShort.equals("")) {
+         //  Toast.makeText(getApplicationContext(), prefe, Toast.LENGTH_SHORT).show();
+        } else {
+          //  apiCall(prefe, vehicle, longDriveOrShort);
+            //Toast.makeText(getApplicationContext(), prefe, Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
-    private void apiCall() {
+    private void apiCall(String pPref, String pVehicleT, String pLongOrShort) {
 
         RequestBody rName = RequestBody.create(MediaType.parse("text/plain"), userName);
         RequestBody rPhone = RequestBody.create(MediaType.parse("text/plain"), phoneNumber);
@@ -161,12 +229,18 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
         RequestBody rAddress = RequestBody.create(MediaType.parse("text/plain"), etAddress.getText().toString());
         RequestBody rDistrict = RequestBody.create(MediaType.parse("text/plain"), etDistrict.getText().toString());
         RequestBody rState = RequestBody.create(MediaType.parse("text/plain"), etState.getText().toString());
-        RequestBody rVehicleType = RequestBody.create(MediaType.parse("text/plain"), etVehicleType.getText().toString());
         RequestBody rExperience = RequestBody.create(MediaType.parse("text/plain"), etExperience.getText().toString());
-        RequestBody rWorkingHours = RequestBody.create(MediaType.parse("text/plain"), etWorkingHours.getText().toString());
         RequestBody rLanguageKnown = RequestBody.create(MediaType.parse("text/plain"), etLanguage.getText().toString());
         RequestBody rBloodGroup = RequestBody.create(MediaType.parse("text/plain"), etBloodGroup.getText().toString());
-        RequestBody rPreference = RequestBody.create(MediaType.parse("text/plain"), etPreferences.getText().toString());
+        RequestBody rBankAccountNumber = RequestBody.create(MediaType.parse("text/plain"), etBankAccountNumber.getText().toString());
+        RequestBody rIFSC = RequestBody.create(MediaType.parse("text/plain"), etIfscCode.getText().toString());
+        //TODO hardcoded device token
+        RequestBody rDeviceToken = RequestBody.create(MediaType.parse("text/plain"), "54645465");
+        RequestBody rLongDrive = RequestBody.create(MediaType.parse("text/plain"), pLongOrShort);
+        RequestBody rDrivePref = RequestBody.create(MediaType.parse("text/plain"), pPref);
+        RequestBody rVehicleType = RequestBody.create(MediaType.parse("text/plain"), pVehicleT);
+
+
         MultipartBody.Part proImageFilePart = null;
         MultipartBody.Part licensePicFilePart = MultipartBody.Part.createFormData("avatar",
                 licenseImageFile.getName(),
@@ -182,10 +256,8 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
         }
 
         APIInterface api = ApiClient.getClient().create(APIInterface.class);
-        api.DRIVEREGROOTCALL(rName, rEmail, rPhone, rPassword, rAddress, rDistrict, rState,
-                rVehicleType, rExperience, rWorkingHours,
-                rLanguageKnown, rBloodGroup,
-                licensePicFilePart, proImageFilePart, rPreference).enqueue(new Callback<Root>() {
+        api.DRIVEREGROOTCALL(rName, rPhone, rEmail, rPassword, rAddress, rDistrict, rState, rExperience, rLanguageKnown, rBloodGroup,
+                rDeviceToken, rVehicleType, rLongDrive, rDrivePref,rBankAccountNumber,rIFSC,licensePicFilePart, proImageFilePart).enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
 
@@ -195,7 +267,7 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
                         Toast.makeText(DriverSignin.this, root.message, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(DriverSignin.this, HomeActivity.class);
                         startActivity(intent);
-                    }else {
+                    } else {
                         Toast.makeText(DriverSignin.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 }

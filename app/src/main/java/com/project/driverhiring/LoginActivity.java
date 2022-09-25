@@ -1,6 +1,8 @@
 package com.project.driverhiring;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -167,6 +169,9 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                     Root root = response.body();
                     if (root.status) {
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        SharedPreferences sharedPreferences = getSharedPreferences("userPref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userId",root.userDetails.get(0).id);
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
