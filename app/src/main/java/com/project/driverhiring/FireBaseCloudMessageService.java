@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -173,6 +174,7 @@ public class FireBaseCloudMessageService extends FirebaseMessagingService {
         // FCM registration token to your app server.
         sendRegistrationToServer(token);
         Log.i("token", token);
+
     }
 
     private void sendRegistrationToServer(String token) {
