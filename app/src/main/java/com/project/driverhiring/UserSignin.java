@@ -145,12 +145,12 @@ public class UserSignin extends AppCompatActivity implements Validator.Validatio
         RequestBody rPassword = RequestBody.create(MediaType.parse("text/plain"), password);
         RequestBody rAddress = RequestBody.create(MediaType.parse("text/plain"), etAddressSingIn.getText().toString());
         MultipartBody.Part proImageFilePart = null;
-        MultipartBody.Part licensePicFilePart = MultipartBody.Part.createFormData("avatar",
+        MultipartBody.Part licensePicFilePart = MultipartBody.Part.createFormData("icon",
                 licenseImageFile.getName(),
                 RequestBody.create(MediaType.parse("image/*"),
                         licenseImageFile));
         try {
-            proImageFilePart = MultipartBody.Part.createFormData("icon",
+            proImageFilePart = MultipartBody.Part.createFormData("avatar",
                     proImageFile.getName(), RequestBody.create(MediaType.parse("image/*"),
                             proImageFile));
 
@@ -165,7 +165,7 @@ public class UserSignin extends AppCompatActivity implements Validator.Validatio
                     Root root = response.body();
                     if (root.status) {
                         Toast.makeText(UserSignin.this, root.message, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(UserSignin.this, HomeActivity.class);
+                        Intent intent = new Intent(UserSignin.this, LoginActivity.class);
                         startActivity(intent);
                     } else {
                         Toast.makeText(UserSignin.this, root.message, Toast.LENGTH_SHORT).show();
@@ -176,7 +176,7 @@ public class UserSignin extends AppCompatActivity implements Validator.Validatio
 
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
-                Toast.makeText(UserSignin.this, "error_one", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserSignin.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

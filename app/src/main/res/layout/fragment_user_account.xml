@@ -24,7 +24,7 @@
             android:textStyle="bold" />
 
         <RelativeLayout
-            android:id="@+id/layout_one"
+            android:id="@+id/submit_bt"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
@@ -43,7 +43,7 @@
             android:id="@+id/layout_two"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layout_one"
+            android:layout_below="@id/submit_bt"
             android:layout_marginTop="50dp"
             android:paddingLeft="24dp"
             android:weightSum="10">
@@ -69,10 +69,10 @@
                     android:id="@+id/iv_user_pro_pic"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/sample_pro_pic"
                     android:layout_marginLeft="10dp"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.circleImageView.round" />
+                    android:scaleType="fitXY"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.circleImageView.round"
+                    tools:src="@drawable/sample_pro_pic" />
 
                 <TextView
                     android:id="@+id/img_upload_bt"
@@ -136,7 +136,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Phone Number" />
+                    android:text="Email" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -145,13 +145,14 @@
                 android:layout_weight="6.5">
 
                 <EditText
-                    android:id="@+id/et_phone_number"
+                    android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLength="10"/>
+                    android:inputType="textEmailAddress" />
+
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/layout_five"
             android:layout_width="match_parent"
@@ -170,7 +171,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email" />
+                    android:text="Address" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -179,12 +180,26 @@
                 android:layout_weight="6.5">
 
                 <EditText
-                    android:id="@+id/et_email"
+                    android:id="@+id/et_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLength="10"/>
+                    android:inputType="text"
+                    android:maxLines="1" />
             </RelativeLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/logout_bt"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:text="L O G O U T"
+            android:textColor="@color/white"
+            android:background="@drawable/account_submit_bg"
+            android:layout_below="@id/layout_five"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:textSize="18sp"/>
+
     </RelativeLayout>
 </ScrollView>

@@ -40,14 +40,14 @@ public class DriverListActivity extends AppCompatActivity {
 
 
         // Toast.makeText(this, getIntent().getStringExtra("vehicleType"), Toast.LENGTH_SHORT).show();
-        driverListApiCall();
+        driverListApiCall(userLatitude,userLongitude,destinationLat,destinationLongitude,vehicleType,driverPreference);
 
     }
 
-    private void driverListApiCall() {
+    private void driverListApiCall(String userLatitude,String userLongitude,String destinationLat,String destinationLongitude,String vehicleType,String driverPreference) {
         APIInterface api = ApiClient.getClient().create(APIInterface.class);
         //TODO change hardcorded values
-        api.DRIVER_LIST_CALL("10.8956", "78.3698", "9.9816", "76.2999", "true", "true").enqueue(new Callback<Root>() {
+        api.DRIVER_LIST_CALL(userLatitude, userLongitude, destinationLat, destinationLongitude, vehicleType, driverPreference).enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
                 if (response.isSuccessful()) {
@@ -58,13 +58,16 @@ public class DriverListActivity extends AppCompatActivity {
                         DriversListAdapter driversListAdapter = new DriversListAdapter(getApplicationContext(), root);
                         recyclerView.setAdapter(driversListAdapter);
                     }else {
+                        Toast.makeText(DriverListActivity.this, root.message, Toast.LENGTH_SHORT).show();
                     }
                 }else {
+                    Toast.makeText(DriverListActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
+                Toast.makeText(DriverListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

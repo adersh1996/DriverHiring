@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:background="@color/user_history_grey">
@@ -31,7 +32,7 @@
             android:layout_toRightOf="@id/iv_driver_pro_pic"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Driver Name"
+            tools:text="Driver Name"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -43,7 +44,7 @@
             android:layout_alignTop="@id/tv_driver_name"
             android:layout_alignParentRight="true"
             android:layout_marginRight="24dp"
-            android:text="230"
+            tools:text="230"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -79,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="16"
+                android:text="0"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -94,12 +95,12 @@
 
         <TextView
             android:id="@+id/trip_km"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_below="@id/tv_trip_amount"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@id/tv_km"
-            android:text="20"
+            tools:text="20"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -143,11 +144,11 @@
 
                 <TextView
                     android:id="@+id/tv_from"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Trivandrum"
+                    tools:text="Trivandrum"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -160,8 +161,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="24dp"
-                android:text="InProgress"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                tools:text="InProgress" />
         </RelativeLayout>
 
         <View
@@ -195,11 +196,11 @@
 
                 <TextView
                     android:id="@+id/tv_to"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Ernakulam"
+                    tools:text="Ernakulam"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />

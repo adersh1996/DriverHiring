@@ -134,15 +134,18 @@
                     android:orientation="horizontal"
                     android:weightSum="1">
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/et_district"
                         style="@style/modifiedEditText"
                         android:layout_weight="0.9"
                         android:background="@null"
                         android:drawablePadding="0.5dip"
-                        android:hint="District"
+                        android:hint="Select District"
                         android:maxLines="1"
-                        android:textColor="@color/black" />
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColor="@color/black"
+                        android:drawableEnd="@drawable/arrow_drop_down"/>
 
                     <ImageView
                         android:layout_width="15dp"
@@ -167,7 +170,7 @@
                     android:orientation="horizontal"
                     android:weightSum="1">
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/et_state"
                         style="@style/modifiedEditText"
                         android:layout_weight="0.9"
@@ -175,7 +178,10 @@
                         android:drawablePadding="0.5dip"
                         android:hint="State"
                         android:maxLines="1"
-                        android:textColor="@color/black" />
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColor="@color/black"
+                        android:drawableEnd="@drawable/arrow_drop_down" />
 
                     <ImageView
                         android:layout_width="15dp"
@@ -208,6 +214,8 @@
                         android:drawablePadding="0.5dip"
                         android:hint="Experience in Years"
                         android:maxLines="1"
+                        android:inputType="number"
+                        android:maxLength="2"
                         android:textColor="@color/black" />
 
                     <ImageView
@@ -232,7 +240,7 @@
                     android:orientation="horizontal"
                     android:weightSum="1">
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/et_bloodGroup"
                         style="@style/modifiedEditText"
                         android:layout_weight="0.9"
@@ -240,7 +248,10 @@
                         android:drawablePadding="0.5dip"
                         android:hint="Blood Group"
                         android:maxLines="1"
-                        android:textColor="@color/black" />
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:textColor="@color/black"
+                        android:drawableEnd="@drawable/arrow_drop_down"/>
 
                     <ImageView
                         android:layout_width="15dp"

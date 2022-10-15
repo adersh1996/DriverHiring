@@ -23,9 +23,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.project.driverhiring.model.Root;
+import com.project.driverhiring.retrofit.APIInterface;
+import com.project.driverhiring.retrofit.ApiClient;
 
 import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DriverDetailsActivity extends AppCompatActivity {
 
@@ -62,6 +72,9 @@ public class DriverDetailsActivity extends AppCompatActivity {
     private ImageView chooseIdPollutionImg;
     private View viewFive;
     private RelativeLayout btBookDriver;
+    private EditText etVehicleModelName;
+    private EditText etVehicleNumber;
+
 
     private static final int STORAGE_PERMISSION_CODE = 101;
     private static final int RESULT_LOAD_RC_IMAGE = 102;
@@ -77,6 +90,9 @@ public class DriverDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_driver_details);
         initView();
 
+        //TODO file upload
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("userPref", MODE_PRIVATE);
         String vehicleType = sharedPreferences.getString("vehicleType", "");
         String drivePref = sharedPreferences.getString("drivePref", "");
@@ -87,14 +103,24 @@ public class DriverDetailsActivity extends AppCompatActivity {
         String userId = sharedPreferences.getString("userId", "");
         String driverId = getIntent().getStringExtra("driver_id");
 
+
+        // Toast.makeText(this, vehicleType, Toast.LENGTH_SHORT).show();
+
         tvDriverName.setText(getIntent().getStringExtra("driver_name"));
         tvDriverOverallRating.setText(getIntent().getStringExtra("driver_rating"));
         tvNoOfRatingsDriver.setText(getIntent().getStringExtra("driver_no_of_rating"));
         tvDriverAddress.setText(getIntent().getStringExtra("driver_address"));
         tvDriverDistrict.setText(getIntent().getStringExtra("driver_district"));
         tvDriverState.setText(getIntent().getStringExtra("driver_state"));
+        try {
+            Glide.with(getApplicationContext()).load(getIntent().getStringExtra("driverImage")).into(ivDriverProPic);
+        } catch (Exception e) {
+
+        }
+
 
         //tvDriverOverallRating.setText(getIntent().getStringExtra("driver_rating"));
+
 
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +179,7 @@ public class DriverDetailsActivity extends AppCompatActivity {
         btBookDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Toast.makeText(DriverDetailsActivity.this, "hi", Toast.LENGTH_SHORT).show();
                 if (etChooseRc.getText().toString().isEmpty() ||
                         etChooseInsurance.getText().toString().isEmpty() ||
                         etChoosePollution.getText().toString().isEmpty()) {
@@ -164,7 +190,7 @@ public class DriverDetailsActivity extends AppCompatActivity {
                     if (etMsgToDriver.getText().toString().isEmpty()) {
                         etMsgToDriver.setError("please enter something");
                     } else {
-                        apiCall();
+                        apiCall(driverId, userId, userLatitude, userLongitude, destinationLat, destinationLong, vehicleType);
                     }
                 }
 
@@ -174,7 +200,87 @@ public class DriverDetailsActivity extends AppCompatActivity {
 
     }
 
-    private void apiCall() {
+    private void apiCall(String driverId, String userId, String userLatitude, String userLongitude, String destinationLat, String destinationLong, String vehicleType) {
+
+        RequestBody rDriverId = RequestBody.create(MediaType.parse("text/plain"), driverId);
+        RequestBody rUserId = RequestBody.create(MediaType.parse("text/plain"), userId);
+        RequestBody rUserLatitude = RequestBody.create(MediaType.parse("text/plain"), userLatitude);
+        RequestBody rUserLongitude = RequestBody.create(MediaType.parse("text/plain"), userLongitude);
+        RequestBody rDestinationLatitude = RequestBody.create(MediaType.parse("text/plain"), destinationLat);
+        RequestBody rDestinationLongitude = RequestBody.create(MediaType.parse("text/plain"), destinationLong);
+        RequestBody rVehicleType = RequestBody.create(MediaType.parse("text/plain"), vehicleType);
+        RequestBody rComments = RequestBody.create(MediaType.parse("text/plain"), etMsgToDriver.getText().toString());
+        RequestBody rVehicleModelName = RequestBody.create(MediaType.parse("text/plain"), etVehicleModelName.getText().toString());
+        RequestBody rVehicleNumber = RequestBody.create(MediaType.parse("text/plain"), etVehicleNumber.getText().toString());
+
+        APIInterface api = ApiClient.getClient().create(APIInterface.class);
+        api.BOOKRIDE_CALL(userId, driverId, userLatitude, userLongitude, destinationLat, destinationLong, etVehicleNumber.getText().toString(), etVehicleModelName.getText().toString(),
+                vehicleType, etMsgToDriver.getText().toString()).enqueue(new Callback<Root>() {
+            @Override
+            public void onResponse(Call<Root> call, Response<Root> response) {
+                if (response.isSuccessful()) {
+                    Root root = response.body();
+                    if (root.status) {
+                        Toast.makeText(DriverDetailsActivity.this, "Ride Booked", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(DriverDetailsActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(DriverDetailsActivity.this, "Error in booking try again", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Root> call, Throwable t) {
+                Toast.makeText(DriverDetailsActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        MultipartBody.Part rcBookImageFilePart = null;
+//        MultipartBody.Part pollutionImageFilePart = null;
+//        MultipartBody.Part insuranceImageFilePart = null;
+
+
+        //TODO Uncomment file uploading
+//        MultipartBody.Part rcBookImageFilePart = MultipartBody.Part.createFormData("rc_book",
+//                rcImageFile.getName(),
+//                RequestBody.create(MediaType.parse("image/*"),
+//                        rcImageFile));
+//        MultipartBody.Part pollutionImageFilePart = MultipartBody.Part.createFormData("pollution",
+//                pollutionImageFile.getName(),
+//                RequestBody.create(MediaType.parse("image/*"),
+//                        pollutionImageFile));
+//        MultipartBody.Part insuranceImageFilePart = MultipartBody.Part.createFormData("insurance",
+//                insuranceImageFile.getName(),
+//                RequestBody.create(MediaType.parse("image/*"),
+//                        insuranceImageFile));
+
+
+//        api.BOOKRIDE_CALL(rUserId, rDriverId, rUserLatitude,
+//                rUserLongitude, rDestinationLatitude, rDestinationLongitude,
+//                rVehicleNumber, rVehicleModelName, rVehicleType, rComments
+//                ).enqueue(new Callback<Root>() {
+//            @Override
+//            public void onResponse(Call<Root> call, Response<Root> response) {
+//                if (response.isSuccessful()) {
+//                    Root root = response.body();
+//                    if (root.status) {
+//                        Toast.makeText(DriverDetailsActivity.this, root.message, Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(DriverDetailsActivity.this, "Error in booking try again", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    Toast.makeText(DriverDetailsActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Root> call, Throwable t) {
+//                Toast.makeText(DriverDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+
 
     }
 
@@ -212,6 +318,8 @@ public class DriverDetailsActivity extends AppCompatActivity {
         chooseIdPollutionImg = findViewById(R.id.choose_id_pollution_img);
         viewFive = findViewById(R.id.view_five);
         btBookDriver = findViewById(R.id.bt_book_driver);
+        etVehicleModelName = findViewById(R.id.et_vehicle_model_name);
+        etVehicleNumber = findViewById(R.id.et_vehicle_number);
     }
 
     // Function to check and request permission.

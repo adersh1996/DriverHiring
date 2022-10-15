@@ -51,7 +51,7 @@
                 android:layout_toRightOf="@id/iv_driver_pro_pic"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="User Name"
+                tools:text="User Name"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -63,7 +63,7 @@
                 android:layout_alignTop="@id/tv_user_name"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="24dp"
-                android:text="230"
+                tools:text="230"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -87,7 +87,7 @@
                 android:layout_below="@id/tv_trip_amount"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@id/tv_km"
-                android:text="20"
+                tools:text="20"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -117,7 +117,7 @@
                 android:id="@+id/tv_trip_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12/08/2022"
+                tools:text="12/08/2022"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -150,11 +150,11 @@
 
                     <TextView
                         android:id="@+id/tv_from"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Trivandrum"
+                        tools:text="Trivandrum"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -202,16 +202,32 @@
 
                     <TextView
                         android:id="@+id/tv_to"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Ernakulam"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="Ernakulam" />
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/call_btn"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/call_btn_bg"
+                    android:elevation="5dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/call_btn_icon" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <View
@@ -249,10 +265,11 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="LMV"
+                        tools:text="LMV"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textAllCaps="true"/>
                 </LinearLayout>
             </RelativeLayout>
 
@@ -291,7 +308,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="KL25H4776"
+                        tools:text="KL25H4776"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -323,7 +340,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="REVIEW"
+                        android:text="INSTRUCTION"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
@@ -333,7 +350,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="Review about the ride"
+                        tools:text="Review about the ride"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -346,7 +363,8 @@
             android:layout_below="@id/layout_two"
             android:background="@color/white"
             android:paddingLeft="24dp"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:visibility="gone">
             <TextView
                 android:id="@+id/tv_mark"
                 android:layout_width="wrap_content"
@@ -354,13 +372,14 @@
                 android:text="Mark The Trip As Completed"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
+
             <RelativeLayout
-                android:id="@+id/bt_confirm_location"
+                android:id="@+id/bt_finish_trip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_mark"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="24dp"
-                android:layout_below="@id/tv_mark"
                 android:background="@drawable/home_tv_bg"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp">
@@ -383,5 +402,95 @@
                     android:src="@drawable/completed_icon" />
             </RelativeLayout>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/start_trip_layout_driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/finish_trip_layout"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:paddingLeft="24dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_mark_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Trip"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:id="@+id/bt_start_trip_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_mark_start"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/home_tv_bg"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Start Trip"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
+                    android:src="@drawable/completed_icon" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/complaint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_trip_layout_driver"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:paddingLeft="24dp">
+
+            <TextView
+                android:id="@+id/tv_dispute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Raise Dispute"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:id="@+id/bt_complaint_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_dispute"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/home_tv_bg"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="24dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Raise a Complaint"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
     </RelativeLayout>
 </ScrollView>

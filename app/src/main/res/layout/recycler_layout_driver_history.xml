@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/user_history_grey"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
@@ -30,7 +31,7 @@
             android:layout_toRightOf="@id/iv_driver_pro_pic"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="User Name"
+            tools:text="User Name"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -42,7 +43,7 @@
             android:layout_alignTop="@id/tv_driver_name"
             android:layout_alignParentRight="true"
             android:layout_marginRight="24dp"
-            android:text="230"
+            tools:text="230"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -58,38 +59,6 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_driver_name"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/iv_driver_pro_pic"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatRatingBar
-                android:id="@+id/rating_driver"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tv_no_of_reviews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="16"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="reviews"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/trip_km"
@@ -98,7 +67,7 @@
             android:layout_below="@id/tv_trip_amount"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@id/tv_km"
-            android:text="20"
+            tools:text="20"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -142,11 +111,11 @@
 
                 <TextView
                     android:id="@+id/tv_from"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Trivandrum"
+                    tools:text="StartLocation"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -159,8 +128,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="24dp"
-                android:text="InProgress"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                tools:text="InProgress" />
         </RelativeLayout>
 
         <View
@@ -180,7 +149,7 @@
             android:paddingLeft="24dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
@@ -194,16 +163,27 @@
 
                 <TextView
                     android:id="@+id/tv_to"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Ernakulam"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="EndLocation" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/view_user_on_map"
+                android:layout_width="wrap_content"
+                android:layout_height="57dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="24dp"
+                android:gravity="center"
+                android:elevation="10dp"
+                android:textColor="@color/blue"
+                android:text="View User On Map" />
         </RelativeLayout>
     </RelativeLayout>
 

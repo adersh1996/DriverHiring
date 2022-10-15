@@ -1,6 +1,7 @@
 package com.project.driverhiring;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.application.isradeleon.notify.Notify;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -55,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
         validator = new Validator(this);
         validator.setValidationListener(this);
+
 
         radioGroup.check(R.id.rb_user);
 
@@ -137,14 +141,31 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     }
 
     public void driverLoginApiCall(String phoneNumber, String passWord) {
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("token", getApplicationContext().MODE_PRIVATE);
+        String deviceToken = sharedPreferences.getString("token", "1234");
+
         APIInterface api = ApiClient.getClient().create(APIInterface.class);
-        api.DRIVER_LOGIN(phoneNumber, passWord).enqueue(new Callback<Root>() {
+        api.DRIVER_LOGIN(phoneNumber, passWord, deviceToken).enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
                 if (response.isSuccessful()) {
                     Root root = response.body();
                     if (root.status) {
                         Intent intentDriver = new Intent(LoginActivity.this, DriverHomeActivity.class);
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("driverPref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("driverId", root.driverDetails.get(0).id);
+                        editor.commit();
+
+                        //login
+                        SharedPreferences sP = getSharedPreferences("login_pref", MODE_PRIVATE);
+                        SharedPreferences.Editor speditor = sP.edit();
+                        speditor.putBoolean("session",true);
+                        speditor.putString("role","driver");
+                        speditor.commit();
+
                         startActivity(intentDriver);
                     } else {
                         Toast.makeText(LoginActivity.this, root.message, Toast.LENGTH_SHORT).show();
@@ -161,8 +182,13 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     }
 
     public void userLoginApiCall(String phoneNumber, String passWord) {
+
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("token", getApplicationContext().MODE_PRIVATE);
+        String deviceToken = sharedPreferences.getString("token", "1234");
+
         APIInterface api = ApiClient.getClient().create(APIInterface.class);
-        api.USER_LOGIN(phoneNumber, passWord).enqueue(new Callback<Root>() {
+        api.USER_LOGIN(phoneNumber, passWord,deviceToken).enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
                 if (response.isSuccessful()) {
@@ -171,7 +197,16 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         SharedPreferences sharedPreferences = getSharedPreferences("userPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("userId",root.userDetails.get(0).id);
+                        editor.putString("userId", root.userDetails.get(0).id);
+                        editor.commit();
+
+                        //login
+                        SharedPreferences sP = getSharedPreferences("login_pref", MODE_PRIVATE);
+                        SharedPreferences.Editor speditor = sP.edit();
+                        speditor.putBoolean("session",true);
+                        speditor.putString("role","user");
+                        speditor.commit();
+
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
@@ -184,5 +219,27 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                 Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alert");
+        builder.setMessage("Do You Want To Exit ?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Action for 'NO' Button
+                        dialog.cancel();
+
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

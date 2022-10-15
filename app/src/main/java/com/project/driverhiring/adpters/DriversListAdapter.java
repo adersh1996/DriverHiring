@@ -2,7 +2,6 @@ package com.project.driverhiring.adpters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.project.driverhiring.DriverDetailsActivity;
 import com.project.driverhiring.R;
@@ -40,8 +40,16 @@ public class DriversListAdapter extends RecyclerView.Adapter<DriversListAdapter.
 
 //        holder.workshopName.setText(root.workshopDetails.get(position).workshop_name);
 //        holder.workshopDistanceTv.setText(root.workshopDetails.get(position).distance);
-//        Glide.with(context).load(root.workshopDetails.get(position).file).into(holder.workshopImg);
+        Glide.with(context).load(root.driverList.get(position).profilepic).into(holder.ivDriverProPic);
         holder.tvDriverName.setText(root.driverList.get(position).name);
+        holder.tvDriverExp.setText(root.driverList.get(position).experience);
+
+        try {
+            holder.ratingDriver.setRating(Float.valueOf(String.valueOf(root.driverList.get(position).driver_rating)));
+            holder.tvNoOfReviews.setText(String.valueOf(root.userHistory.get(position).no_of_ratings));
+        } catch (Exception e) {
+
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +69,7 @@ public class DriversListAdapter extends RecyclerView.Adapter<DriversListAdapter.
                 intent.putExtra("driver_address",root.driverList.get(position).address);
                 intent.putExtra("driver_district",root.driverList.get(position).district);
                 intent.putExtra("driver_state",root.driverList.get(position).state);
+                intent.putExtra("driverImage",root.driverList.get(position).profilepic);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

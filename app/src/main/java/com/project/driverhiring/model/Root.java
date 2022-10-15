@@ -8,6 +8,20 @@ public class Root {
     public ArrayList<DriverDetail> driverDetails;
     public ArrayList<UserDetail> userDetails;
     public ArrayList<DriverList> driverList;
+    public ArrayList<DriverHistory> driverHistory;
+    public ArrayList<UserHistory> userHistory;
+    public ArrayList<NotRideList> notRideList;
+    public ArrayList<UserProfileView> userProfileView;
+    public ArrayList<DriverProfileView> driverProfileView;
+
+
+
+
+
+
+
+
+
 
 
 }

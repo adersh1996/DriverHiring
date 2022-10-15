@@ -13,5 +13,5 @@ public class DriverList {
     public String experience;
     public String profilepic;
     public int number_of_rating;
-    public Object driver_rating;
+    public String driver_rating;
 }

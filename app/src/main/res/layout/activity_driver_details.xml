@@ -31,7 +31,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/sample_pro_pic"
+            tools:src="@drawable/sample_pro_pic"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.circleImageView.round" />
 
         <TextView
@@ -196,6 +196,7 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/grey_border_bg"
             android:orientation="vertical"
+            android:visibility="gone"
             android:padding="10dp">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -226,11 +227,92 @@
                 android:textSize="14sp" />
         </RelativeLayout>
 
+
+
+
+        <LinearLayout
+            android:id="@+id/layout_vehicle_model_name"
+            android:layout_below="@id/layout_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/et_vehicle_model_name"
+                style="@style/modifiedEditText"
+                android:layout_weight="0.9"
+                android:background="@null"
+                android:drawablePadding="0.5dip"
+                android:hint="Vehicle Model Name"
+                android:maxLines="1"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:gravity="center|left"
+                android:src="@drawable/district_icon" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_six"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/layout_vehicle_model_name"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/colorlinebkack" />
+
+
+
+
+
+
+
+        <LinearLayout
+            android:id="@+id/layout_vehicle_number"
+            android:layout_below="@id/layout_vehicle_model_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/et_vehicle_number"
+                style="@style/modifiedEditText"
+                android:layout_weight="0.9"
+                android:background="@null"
+                android:drawablePadding="0.5dip"
+                android:hint="Vehicle Number"
+                android:maxLines="1"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:gravity="center|left"
+                android:src="@drawable/district_icon" />
+
+        </LinearLayout>
+
         <View
             android:id="@+id/view_one"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/layout_five"
+            android:layout_below="@id/layout_vehicle_number"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"

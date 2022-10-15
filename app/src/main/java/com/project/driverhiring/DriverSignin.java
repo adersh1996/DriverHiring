@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,15 +56,15 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
     @NotEmpty
     private EditText etAddress;
     @NotEmpty
-    private EditText etDistrict;
+    private AutoCompleteTextView etDistrict;
     @NotEmpty
-    private EditText etState;
+    private AutoCompleteTextView etState;
     @NotEmpty
     private EditText etExperience;
     @NotEmpty
     private EditText etLanguage;
     @NotEmpty
-    private EditText etBloodGroup;
+    private AutoCompleteTextView etBloodGroup;
     @NotEmpty
     private EditText etChooseId;
     private ImageView chooseIdOne;
@@ -115,6 +117,46 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
 
         tvUserName.setText(userName);
 
+//district dropdown
+        String[] district = getResources().getStringArray(R.array.district);
+        ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
+                , district);
+        etDistrict.setAdapter(districtAdapter);
+        etDistrict.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etDistrict.showDropDown();
+            }
+        });
+
+//state dropdown
+        String[] state = getResources().getStringArray(R.array.state);
+        ArrayAdapter<String> stateAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
+                , state);
+        etState.setAdapter(stateAdapter);
+        etState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etState.showDropDown();
+            }
+        });
+
+//bloodgroup dropdown
+        String[] bloodGroupArray = getResources().getStringArray(R.array.blood_group);
+        ArrayAdapter<String> bloodgroupAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
+                , bloodGroupArray);
+        etBloodGroup.setAdapter(bloodgroupAdapter);
+        etBloodGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etBloodGroup.showDropDown();
+            }
+        });
+
+
         editProImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,9 +199,9 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
         etDistrict = findViewById(R.id.et_district);
         etState = findViewById(R.id.et_state);
         etExperience = findViewById(R.id.et_experience);
-        etBloodGroup=findViewById(R.id.et_bloodGroup);
-        etBankAccountNumber=findViewById(R.id.et_bank_account_number);
-        etIfscCode=findViewById(R.id.et_ifsc_code);
+        etBloodGroup = findViewById(R.id.et_bloodGroup);
+        etBankAccountNumber = findViewById(R.id.et_bank_account_number);
+        etIfscCode = findViewById(R.id.et_ifsc_code);
         etLanguage = findViewById(R.id.et_language);
         etChooseId = findViewById(R.id.et_choose_id);
         chooseIdOne = findViewById(R.id.choose_id_one);
@@ -211,9 +253,9 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
         }
 
         if (prefe.equals("") || vehicle.equals("") || longDriveOrShort.equals("")) {
-         //  Toast.makeText(getApplicationContext(), prefe, Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(getApplicationContext(), prefe, Toast.LENGTH_SHORT).show();
         } else {
-          //  apiCall(prefe, vehicle, longDriveOrShort);
+            apiCall(prefe, vehicle, longDriveOrShort);
             //Toast.makeText(getApplicationContext(), prefe, Toast.LENGTH_SHORT).show();
 
         }
@@ -242,12 +284,12 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
 
 
         MultipartBody.Part proImageFilePart = null;
-        MultipartBody.Part licensePicFilePart = MultipartBody.Part.createFormData("avatar",
+        MultipartBody.Part licensePicFilePart = MultipartBody.Part.createFormData("icon",
                 licenseImageFile.getName(),
                 RequestBody.create(MediaType.parse("image/*"),
                         licenseImageFile));
         try {
-            proImageFilePart = MultipartBody.Part.createFormData("icon",
+            proImageFilePart = MultipartBody.Part.createFormData("avatar",
                     proImageFile.getName(), RequestBody.create(MediaType.parse("image/*"),
                             proImageFile));
 
@@ -257,7 +299,7 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
 
         APIInterface api = ApiClient.getClient().create(APIInterface.class);
         api.DRIVEREGROOTCALL(rName, rPhone, rEmail, rPassword, rAddress, rDistrict, rState, rExperience, rLanguageKnown, rBloodGroup,
-                rDeviceToken, rVehicleType, rLongDrive, rDrivePref,rBankAccountNumber,rIFSC,licensePicFilePart, proImageFilePart).enqueue(new Callback<Root>() {
+                rDeviceToken, rVehicleType, rLongDrive, rDrivePref, rBankAccountNumber, rIFSC, licensePicFilePart, proImageFilePart).enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
 
@@ -265,7 +307,7 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
                     Root root = response.body();
                     if (root.status) {
                         Toast.makeText(DriverSignin.this, root.message, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(DriverSignin.this, HomeActivity.class);
+                        Intent intent = new Intent(DriverSignin.this, LoginActivity.class);
                         startActivity(intent);
                     } else {
                         Toast.makeText(DriverSignin.this, "Error", Toast.LENGTH_SHORT).show();

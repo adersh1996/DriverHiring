@@ -1,10 +1,5 @@
 package com.project.driverhiring;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +13,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -34,10 +35,11 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
     private GoogleMap mMap;
     private ActivityMapChooseDestinationBinding binding;
     RelativeLayout confirmLocationBt;
-    String destinationLatitude ="", destinationLongitude ="";
+    String destinationLatitude = "", destinationLongitude = "";
     private GpsTracker gpsTracker;
     double userLatitudeDouble, userLongitudeDouble;
-    String userLatitude= "",userLongitude="";
+    String userLatitude = "", userLongitude = "";
+    private static final int DEFAULT_ZOOM = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +63,12 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
                     userLatitudeDouble = gpsTracker.getLatitude();
                     userLongitudeDouble = gpsTracker.getLongitude();
 
-                    userLatitude=String.valueOf(userLatitudeDouble);
-                    userLongitude=String.valueOf(userLongitudeDouble);
+                    userLatitude = String.valueOf(userLatitudeDouble);
+                    userLongitude = String.valueOf(userLongitudeDouble);
+
+                    Log.i("lat", userLatitude);
+                    Log.i("lat", userLongitude);
+
 
                     // apiCall("8.9076","77.0549");
                     //                   apiCall(String.valueOf(latitude),String.valueOf(longitude));
@@ -92,31 +98,27 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
         }
 
 
-
-
-
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        confirmLocationBt=findViewById(R.id.bt_confirm_location);
+        confirmLocationBt = findViewById(R.id.bt_confirm_location);
 
         confirmLocationBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (destinationLatitude.equals("")|| destinationLongitude.equals("")){
+                if (destinationLatitude.equals("") || destinationLongitude.equals("")) {
                     Toast.makeText(MapActivityChooseDestination.this, "Please Choose Your Destination", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     SharedPreferences sharedPreferences = getSharedPreferences("userPref", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("destination_lat",destinationLatitude);
-                    editor.putString("destination_longitude",destinationLongitude);
-                    editor.putString("user_latitude",userLatitude);
-                    editor.putString("user_longitude",userLongitude);
+                    editor.putString("destination_lat", destinationLatitude);
+                    editor.putString("destination_longitude", destinationLongitude);
+                    editor.putString("user_latitude", userLatitude);
+                    editor.putString("user_longitude", userLongitude);
                     editor.commit();
-                    Intent intent=new Intent(getApplicationContext(),DriverListActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), DriverListActivity.class);
                     startActivity(intent);
                 }
             }
@@ -139,9 +141,18 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
+        // LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        try {
+            LatLng myLocation = new LatLng(userLatitudeDouble, userLongitudeDouble);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(userLatitudeDouble,
+                            userLongitudeDouble), DEFAULT_ZOOM));
+        } catch (Exception e) {
+
+        }
+
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -167,7 +178,7 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
                     Log.i("IGA", "Address" + add);
                     // Toast.makeText(this, "Address=>" + add,
                     // Toast.LENGTH_SHORT).show();
-                    Toast.makeText(MapActivityChooseDestination.this, obj.getLocality()+" selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapActivityChooseDestination.this, obj.getLocality() + " selected", Toast.LENGTH_SHORT).show();
                     // TennisAppActivity.showDialog(add);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -180,6 +191,7 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
 
 
     }
+
     // Function to check and request permission.
     public void checkPermissions(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), permission) == PackageManager.PERMISSION_DENIED) {

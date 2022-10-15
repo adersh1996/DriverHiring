@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 
@@ -28,7 +29,7 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
     @NotEmpty
     private EditText etNameSingIn;
     @NotEmpty
-    @Pattern(regex = "^[7-9][0-9]{9}$", message = "Invalid Mobile Number")
+    @Length(max = 10, min = 10, message = "Enter a valid mobile number")
     private EditText etPhnSingIn;
     @NotEmpty
     @Email
@@ -57,6 +58,12 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
             public void onClick(View view) {
                 validator.validate();
 
+            }
+        });
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
             }
         });
 

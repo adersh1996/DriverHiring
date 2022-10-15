@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_home_btm_nav_icon"/>
     <item
         android:id="@+id/recent_order"
-        android:title="Recent Orders"
+        android:title="Trip History"
         android:icon="@drawable/ic_recent_order_btm_nav_icon"/>
     <item
         android:id="@+id/account"

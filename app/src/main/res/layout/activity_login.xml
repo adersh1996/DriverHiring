@@ -68,7 +68,7 @@
                         android:drawablePadding="0.5dip"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:text="8157073329"
+                        android:hint="Phone Number"
                         android:textColor="@color/black" />
 
 
@@ -103,7 +103,7 @@
                         android:drawablePadding="0.5dip"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:text="123"
+                        android:hint="Password"
                         android:textColor="@color/black" />
 
                     <ImageView

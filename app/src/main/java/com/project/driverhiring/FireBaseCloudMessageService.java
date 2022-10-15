@@ -4,13 +4,14 @@ import static android.content.ContentValues.TAG;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.application.isradeleon.notify.Notify;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -22,8 +23,8 @@ import java.util.Map;
 public class FireBaseCloudMessageService extends FirebaseMessagingService {
 
 
-    private String category, subject, courseId, company, vacancy, placement, job, post, examCategory, name;
-    String title, message, from, img;
+  //  private String category, subject, courseId, company, vacancy, placement, job, post, examCategory, name;
+    String title, message, from, name;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -134,31 +135,58 @@ public class FireBaseCloudMessageService extends FirebaseMessagingService {
 //
 //        }
 
-    //push
+        //push
 
-//        try {
-//            Map<String, String> params = remoteMessage.getData();
-//            JSONObject object = new JSONObject(params);
-//            {
-//
-//                title = "Request Accepted";
-//                message = "Staff Name" + object.getString("Staff_name");
+        try {
+            Map<String, String> params = remoteMessage.getData();
+            JSONObject object = new JSONObject(params);
+            {
+
+                //  title = "Request Accepted";
+//                from = object.getString("From")+" needs a driver";
+//                message = object.getString("message");
 //                Notify.build(this)
-//                        .setTitle(title)
-//                        .setContent(message)
-//                        //  .setSmallIcon(R.drawable.sample_pro_pic)
-//                        // .setLargeIcon(img)
-//                        .largeCircularIcon()
-//                        // .setPicture()
-//                        .setColor(R.color.login_bt_bg_color)
-//                        // .setAction(intent)
-//                        .show();
-//            }
-//
-//
-//        } catch (Exception e) {
-//            Log.e("ERROR IN PUSH", String.valueOf(e));
-//        }
+//                        .setTitle(message)
+//                        .setContent(from)
+//                        .setSmallIcon(R.drawable.bg4)
+                        // .setLargeIcon(img)
+                        //.largeCircularIcon()
+                        // .setPicture()
+                      //  .setColor(R.color.login_bt_bg_color)
+                        // .setAction(intent)
+                      //  .show();
+                Intent intent = new Intent(this, MainActivity.class);
+
+                from=object.getString("From");
+
+                if (from.equals("User")){
+                    message = object.getString("message");
+                    name=object.getString("Name");
+                    Notify.build(this)
+                            .setTitle(message)
+                            .setContent(name+" needs a driver")
+                            .setSmallIcon(R.drawable.bg4)
+                            .setAction(intent)
+                            .show();
+                }
+                if (from.equals("Driver")){
+                    message = object.getString("message");
+                    name=object.getString("Name");
+                    Notify.build(this)
+                            .setTitle(message)
+                            .setContent(message+"by "+name)
+                            .setSmallIcon(R.drawable.bg4)
+                            .setAction(intent)
+                            .show();
+
+                }
+
+            }
+
+
+        } catch (Exception e) {
+            Log.e("ERROR IN PUSH", String.valueOf(e));
+        }
 
 
     }
