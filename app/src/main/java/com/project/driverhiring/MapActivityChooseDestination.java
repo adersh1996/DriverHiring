@@ -148,7 +148,7 @@ public class MapActivityChooseDestination extends FragmentActivity implements On
             LatLng myLocation = new LatLng(userLatitudeDouble, userLongitudeDouble);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(userLatitudeDouble,
-                            userLongitudeDouble), DEFAULT_ZOOM));
+                            userLongitudeDouble),DEFAULT_ZOOM));
         } catch (Exception e) {
 
         }

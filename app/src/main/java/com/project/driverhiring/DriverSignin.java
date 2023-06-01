@@ -310,7 +310,7 @@ public class DriverSignin extends AppCompatActivity implements Validator.Validat
                         Intent intent = new Intent(DriverSignin.this, LoginActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(DriverSignin.this, "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DriverSignin.this, root.message, Toast.LENGTH_SHORT).show();
                     }
                 }
 
